@@ -1,5 +1,9 @@
 __pycache__/
 *.pyc
 gspread_anahtar.json.json
+gspread_anahtar.json
 *.db
 son_uretilen_qr.png
+.env
+.env.local
+.env.*.local

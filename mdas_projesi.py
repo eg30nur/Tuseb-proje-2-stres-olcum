@@ -1,33 +1,40 @@
 from flask import Flask, render_template, request, redirect, url_for
 import os
+import json
+import base64
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
+from dotenv import load_dotenv
+from io import StringIO
+
+# Load environment variables from .env file
+load_dotenv()
 
 app = Flask(__name__, template_folder='templates')
 app.secret_key = 'super_secret_key'
 
 # --- GOOGLE SHEETS API AYARLARI ---
-base_dir = os.path.abspath(os.path.dirname(__file__))
-json_anahtar_yolu = os.path.join(base_dir, 'gspread_anahtar.json')
-json_anahtar_yolu_alt = os.path.join(base_dir, 'gspread_anahtar.json.json')
-
-if not os.path.exists(json_anahtar_yolu) and os.path.exists(json_anahtar_yolu_alt):
-    json_anahtar_yolu = json_anahtar_yolu_alt
-
-# Google API'ye bağlanmak için izin sınırlarını (Scope) çiziyoruz
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
 
 google_sayfasi = None
 google_api_error = None
 
 try:
-    if not os.path.exists(json_anahtar_yolu):
-        raise FileNotFoundError(
-            f"Anahtar dosyası bulunamadı: {json_anahtar_yolu}.\n"
-            "Lütfen 'gspread_anahtar.json' veya 'gspread_anahtar.json.json' dosyasını proje klasörüne koyun."
+    # Load credentials from environment variable
+    creds_b64 = os.getenv('GOOGLE_CREDENTIALS_B64')
+    
+    if not creds_b64:
+        raise ValueError(
+            "GOOGLE_CREDENTIALS_B64 environment variable not found. "
+            "Please ensure .env file exists and contains GOOGLE_CREDENTIALS_B64."
         )
-
-    creds = ServiceAccountCredentials.from_json_keyfile_name(json_anahtar_yolu, scope)
+    
+    # Decode base64 credentials
+    creds_json_str = base64.b64decode(creds_b64).decode('utf-8')
+    creds_dict = json.loads(creds_json_str)
+    
+    # Create credentials from the dictionary
+    creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
     client = gspread.authorize(creds)
     
     # !!! BURAYA GOOGLE DRIVE'DA OLUŞTURDUĞUN E-TABLONUN TAM ADINI YAZ !!!
