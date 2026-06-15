@@ -1,0 +1,112 @@
+﻿<
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MDAS Anksiyete Değerlendirme Formu</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .form-container {
+            max-width: 650px;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .likert-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="form-container">
+            <h2 class="text-center mb-2 text-primary">MDAS Formu</h2>
+            <p class="text-center text-muted small mb-4">Lütfen aşağıdaki soruları durumunuza en uygun şekilde yanıtlayınız.</p>
+
+            <form action="/mdas?session_id={{ session_id }}" method="POST">
+
+                <div class="mb-4 p-3 border rounded bg-light">
+                    <label class="form-label fw-bold text-secondary">Hasta Adı Soyadı <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="patient_name" id="patient_name" required>
+                </div>
+
+                <div class="mb-4 p-3 border-bottom">
+                    <label class="form-label fw-bold">1. Yarın dişhekimine gidecek olsanız kendinizi nasıl hissedersiniz?</label>
+                    <input type="range" class="form-range" min="1" max="5" step="1" name="q1" id="q1" required>
+                    <div class="likert-labels">
+                        <span>1 - Huzurlu</span>
+                        <span>2 - Biraz Tedirgin</span>
+                        <span>3 - Gergin</span>
+                        <span>4 - Korkmuş</span>
+                        <span>5 - Dehşet İçinde</span>
+                    </div>
+                </div>
+
+                <div class="mb-4 p-3 border-bottom">
+                    <label class="form-label fw-bold">2. Dişhekiminin muayene odasında sıra beklerken kendinizi nasıl hissedersiniz?</label>
+                    <input type="range" class="form-range" min="1" max="5" step="1" name="q2" id="q2" required>
+                    <div class="likert-labels">
+                        <span>1 - Huzurlu</span>
+                        <span>2 - Biraz Tedirgin</span>
+                        <span>3 - Gergin</span>
+                        <span>4 - Korkmuş</span>
+                        <span>5 - Dehşet İçinde</span>
+                    </div>
+                </div>
+
+                <div class="mb-4 p-3 border-bottom">
+                    <label class="form-label fw-bold">3. Diş koltuğuna oturduğunuzda, hekim dişinizi delmek/oymak için aletleri hazırlarken ne hissedersiniz?</label>
+                    <input type="range" class="form-range" min="1" max="5" step="1" name="q3" id="q3" required>
+                    <div class="likert-labels">
+                        <span>1 - Huzurlu</span>
+                        <span>2 - Biraz Tedirgin</span>
+                        <span>3 - Gergin</span>
+                        <span>4 - Korkmuş</span>
+                        <span>5 - Dehşet İçinde</span>
+                    </div>
+                </div>
+
+                <div class="mb-4 p-3 border-bottom">
+                    <label class="form-label fw-bold">4. Diş koltuğuna oturmuş, diş etinizin temizlenmesi veya kazınması için aletlerin ağzınıza sokulmasını beklerken ne hissedersiniz?</label>
+                    <input type="range" class="form-range" min="1" max="5" step="1" name="q4" id="q4" required>
+                    <div class="likert-labels">
+                        <span>1 - Huzurlu</span>
+                        <span>2 - Biraz Tedirgin</span>
+                        <span>3 - Gergin</span>
+                        <span>4 - Korkmuş</span>
+                        <span>5 - Dehşet İçinde</span>
+                    </div>
+                </div>
+
+                <div class="mb-4 p-3 border-bottom">
+                    <label class="form-label fw-bold">5. Dişhekiminin size lokal anestezi (iğne) yapacağını düşündüğünüzde ne hissedersiniz?</label>
+                    <input type="range" class="form-range" min="1" max="5" step="1" name="q5" id="q5" required>
+                    <div class="likert-labels">
+                        <span>1 - Huzurlu</span>
+                        <span>2 - Biraz Tedirgin</span>
+                        <span>3 - Gergin</span>
+                        <span>4 - Korkmuş</span>
+                        <span>5 - Dehşet İçinde</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 py-2 mt-3">Formu Gönder ve Tamamla</button>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

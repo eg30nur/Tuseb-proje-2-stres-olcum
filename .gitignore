@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+gspread_anahtar.json.json
+*.db
+son_uretilen_qr.png
