@@ -12,9 +12,20 @@ router = APIRouter(
 @router.post("/", response_model=schemas.MeasurementOut, status_code=status.HTTP_201_CREATED)
 def create_measurement(measurement: schemas.MeasurementIn, db: Session = Depends(get_db)):
     
-    # 1. Pydantic ile gelen veriyi (schemas) veritabanı modeline (models) çeviriyoruz
+    # -- YENİ EKLENEN KISIM: Duplicate (Çift Kayıt) Kontrolü --
+    # Aynı hasta için, aynı zaman damgasına (timestamp) sahip bir veri zaten var mı diye veritabanına soruyoruz.
+    existing_record = db.query(models.Measurement).filter(
+        models.Measurement.session_id == measurement.patient_id,
+        models.Measurement.timestamp == measurement.timestamp
+    ).first()
+
+    if existing_record:
+        # Eğer veri zaten varsa, sisteme yeni kayıt ekleme ama donanıma "Tamam, bende var" (200 OK) mesajı yolla
+        return existing_record
+    # ---------------------------------------------------------
+
     db_measurement = models.Measurement(
-        session_id=measurement.patient_id, # Şimdilik session_id yerine patient_id kullanıyoruz (ileride düzelteceğiz)
+        session_id=measurement.patient_id,
         timestamp=measurement.timestamp,
         phase=measurement.phase,
         gsr=measurement.gsr,
@@ -25,10 +36,9 @@ def create_measurement(measurement: schemas.MeasurementIn, db: Session = Depends
         dbp=measurement.dbp
     )
     
-    # 2. Veritabanına ekle ve kaydet (C++'taki pointer ile bellek adresine yazmak gibi düşünebilirsin)
     db.add(db_measurement)
     db.commit()
-    db.refresh(db_measurement) # Veritabanından oluşan otomatik ID'yi çekmek için
+    db.refresh(db_measurement)
     
     return db_measurement
 
